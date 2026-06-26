@@ -1,31 +1,66 @@
 package com.tripod.core;
 
-import java.util.Random;
+import com.tripod.core.graphics.Sprite;
 
 public class Screen {
-  
+
+  public final int X;
+  public final int Y;
   public final int WIDTH;
   public final int HEIGHT;
   public int[] pixels;
-  
-  public Screen(int WIDTH, int HEIGHT) {
+
+  public Screen(int X, int Y, int WIDTH, int HEIGHT) {
+    this.X = X;
+    this.Y = Y;
     this.WIDTH = WIDTH;
     this.HEIGHT = HEIGHT;
     this.pixels = new int[WIDTH * HEIGHT];
-    
-    Random random = new Random();
-    
-    for (int i = 0; i < WIDTH*HEIGHT; i++) {
-      pixels[i] = random.nextInt();
-    }
   }
-  
-  public void render(int x, int y, int[] pixels) { 
-    for (int yy = y; yy < HEIGHT; yy++) {
-      for (int xx = x; xx < WIDTH; xx++) {
-        pixels[xx + yy * WIDTH] = this.pixels[xx + yy * WIDTH];
+
+  public void render(int[] pixels) {
+    for (int yp = 0; yp < HEIGHT; yp++) {
+      int screenY = yp + Y;
+
+      if (screenY < 0 || screenY >= Game.HEIGHT)
+        continue;
+
+      for (int xp = 0; xp < WIDTH; xp++) {
+        int screenX = xp + X;
+
+        if (screenX < 0 || screenX >= Game.WIDTH)
+          continue;
+
+        pixels[screenX + screenY * Game.WIDTH] = this.pixels[xp + yp * WIDTH];
       }
     }
   }
+  
+  public void renderSprite(int xPos, int yPos, Sprite sprite) {
+
+    int[] spritePixels = sprite.getPixels();
+
+    for (int y = 0; y < sprite.getHeight(); y++) {
+        int screenY = y + yPos;
+
+        if (screenY < 0 || screenY >= HEIGHT)
+            continue;
+
+        for (int x = 0; x < sprite.getWidth(); x++) {
+            int screenX = x + xPos;
+
+            if (screenX < 0 || screenX >= WIDTH)
+                continue;
+
+            int color = spritePixels[x + y * sprite.getWidth()];
+
+            // Example: treat magenta as transparent
+            if (color == 0xFFFF00FF)
+                continue;
+
+            pixels[screenX + screenY * WIDTH] = color;
+        }
+    }
+}
 
 }
