@@ -120,6 +120,14 @@ public class Sprite {
     public int getHeight() {
         return height;
     }
+    
+    public int getHalfWidth() {
+      return width / 2;
+    }
+    
+    public int getHalfHeight() {
+      return height / 2;
+    }
 
     public void setAnimationSpeed(int speed) {
         animationSpeed = speed;

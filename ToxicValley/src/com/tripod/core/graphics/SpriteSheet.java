@@ -14,7 +14,9 @@ public class SpriteSheet {
   public int[] pixels;
 
   public static final SpriteSheet GAME_SHEET = new SpriteSheet(
-      "/sprites/game.png");
+      "/sprites/ToxicValleyWorldMap.png");
+  public static final SpriteSheet BUTTONS_SHEET = new SpriteSheet(
+      "/sprites/buttons.png");
 
   public SpriteSheet(String path) {
     BufferedImage image;

@@ -1,6 +1,10 @@
 package com.tripod.core;
 
+import java.util.ArrayList;
+
 import com.tripod.core.graphics.Sprite;
+import com.tripod.core.ui.button.Button;
+import com.tripod.core.ui.menu.MenuGroup;
 
 public class Screen {
 
@@ -35,32 +39,39 @@ public class Screen {
       }
     }
   }
-  
+
   public void renderSprite(int xPos, int yPos, Sprite sprite) {
 
     int[] spritePixels = sprite.getPixels();
 
     for (int y = 0; y < sprite.getHeight(); y++) {
-        int screenY = y + yPos;
+      int screenY = y + yPos;
 
-        if (screenY < 0 || screenY >= HEIGHT)
-            continue;
+      if (screenY < 0 || screenY >= HEIGHT)
+        continue;
 
-        for (int x = 0; x < sprite.getWidth(); x++) {
-            int screenX = x + xPos;
+      for (int x = 0; x < sprite.getWidth(); x++) {
+        int screenX = x + xPos;
 
-            if (screenX < 0 || screenX >= WIDTH)
-                continue;
+        if (screenX < 0 || screenX >= WIDTH)
+          continue;
 
-            int color = spritePixels[x + y * sprite.getWidth()];
+        int color = spritePixels[x + y * sprite.getWidth()];
 
-            // Example: treat magenta as transparent
-            if (color == 0xFFFF00FF)
-                continue;
+        // Example: treat magenta as transparent
+        if (color == 0xFFFF00FF)
+          continue;
 
-            pixels[screenX + screenY * WIDTH] = color;
-        }
+        pixels[screenX + screenY * WIDTH] = color;
+      }
     }
-}
+
+  }
+
+  public void renderMenuGroup(int xPos, int yPos, MenuGroup menuGroup) {
+    ArrayList<Button> buttons = menuGroup.getOpenMenu().getButtons();
+    buttons.stream()
+        .forEach(b -> renderSprite(b.getX(), b.getY(), b.getSprite()));
+  }
 
 }
